@@ -1,0 +1,30 @@
+# Playwright関連
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+# Node.js関連
+node_modules/
+package-lock.json
+
+# IDE関連
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS関連
+.DS_Store
+Thumbs.db
+
+# ログファイル
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 環境変数
+.env
+.env.local
+.env.*.local 
