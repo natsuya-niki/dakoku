@@ -36,17 +36,12 @@ cp .env.example .env
 
 プロジェクト名を指定して実行（日付と時間を指定）:
 ```bash
-pnpm exec playwright test tests/jobcan.spec.ts --project=chromium --debug -- --date 20250209 --start 0900 --end 1800
-```
-
-デフォルト値を使用する場合:
-```bash
-pnpm exec playwright test tests/jobcan.spec.ts --project=chromium --debug  --headed -- --date 20250203
+TEST_DATE=20250214 TEST_START_TIME=0900 TEST_END_TIME=1800 pnpm exec playwright test tests/jobcan.spec.ts --project=chromium --headed
 ```
 
 ### Slack打刻の実行
 ```bash
-pnpm exec playwright test tests/slack.spec.ts --project=chromium --debug --headed
+TEST_DATE=20250214 TEST_START_TIME=0900 TEST_END_TIME=1800 pnpm exec playwright test tests/slack.spec.ts --project=chromium --headed
 ```
 
 ## オプション
