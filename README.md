@@ -46,18 +46,3 @@ pnpm exec playwright test tests/slack.spec.ts --project=chromium --headed
 # 日付と打刻時刻を指定する場合
 TEST_DATE=20250214 TEST_START_TIME=0900 TEST_END_TIME=1800 pnpm exec playwright test tests/slack.spec.ts --project=chromium --headed
 ```
-
-## オプション
-
-- `--date`: 打刻する日付（形式: YYYYMMDD）
-- `--start`: 開始時刻（形式: HHMM）
-- `--end`: 終了時刻（形式: HHMM）
-```
-
-また、`.node-version`ファイルも更新します：
-
-```:.node-version
-22.7.0
-```
-
-これらの変更により、nodenvとpnpmを使用した一貫性のある環境構築が可能になります。また、実行コマンドもnpxからpnpm execに変更し、より確実なパッケージ管理を実現しています。
