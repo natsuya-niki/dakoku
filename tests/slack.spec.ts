@@ -1,9 +1,11 @@
-import { test, expect } from '@playwright/test';
+import { test } from '@playwright/test';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import dotenv from 'dotenv';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
+
+import config from '../config.test.json';
 
 dotenv.config();
 dayjs.extend(utc);
@@ -13,36 +15,44 @@ dayjs.extend(customParseFormat);
 test.setTimeout(60000);
 
 test('Slack打刻', async ({ page }) => {
-  // 環境変数から引数を取得
   const args = {
-    date: process.env.TEST_DATE ? process.env.TEST_DATE : dayjs().tz('Asia/Tokyo').format('YYYYMMDD'),
-    start: process.env.TEST_START_TIME || '0900',
-    end: process.env.TEST_END_TIME || '1800'
+    date: config.testDate || dayjs().tz('Asia/Tokyo').format('YYYYMMDD'),
+    start: config.testStartTime || '0900',
+    end: config.testEndTime || '1800'
   };
 
-  // console.log(args.start);
-  // console.log(dayjs(args.start, 'HHmm').format('HH:mm'));
+  const slackSigninUrl = config.slackSigninUrl;
+  const slackClientUrl = config.slackClientUrl;
+  const slackWorkspace = config.slackWorkspace;
+  const slackEmail = config.slackEmail;
+  const slackPassword = config.slackPassword;
 
-  // 環境変数が設定されているか確認
-  if (!process.env.SLACK_WORKSPACE || !process.env.SLACK_EMAIL || !process.env.SLACK_PASSWORD) {
-    throw new Error('環境変数 SLACK_WORKSPACE と SLACK_EMAIL と SLACK_PASSWORD を設定してください');
+  if (!slackSigninUrl || !slackClientUrl || !slackWorkspace || !slackEmail || !slackPassword) {
+    throw new Error(`
+      以下の設定値が正しく設定されているか確認してください:
+      slackSigninUrl: ${slackSigninUrl}
+      slackClientUrl: ${slackClientUrl}
+      slackWorkspace: ${slackWorkspace}
+      slackEmail: ${slackEmail}
+      slackPassword: ${slackPassword}
+    `);
   }
 
-  await page.goto('https://app.slack.com/workspace-signin?redir=%2Fgantry%2Fauth%3Fapp%3Dclient%26lc%3D1739108612%26return_to%3D%252Fclient%252FT4Y2T7AMN%252FC059VF7J8TV%26teams%3D');
-  await page.getByRole('textbox', { name: 'ワークスペースの Slack URL を入力してください' }).fill(process.env.SLACK_WORKSPACE || '');
+  await page.goto(slackSigninUrl);
+  await page.getByRole('textbox', { name: 'ワークスペースの Slack URL を入力してください' }).fill(slackWorkspace);
   await page.getByRole('button', { name: '続行する' }).click();
   await page.getByRole('button', { name: 'Google でサインインする' }).click();
 
-  await page.getByRole('textbox', { name: 'メールアドレスまたは電話番号' }).fill(process.env.SLACK_EMAIL);
+  await page.getByRole('textbox', { name: 'メールアドレスまたは電話番号' }).fill(slackEmail);
   await page.getByRole('button', { name: '次へ' }).click();
-  await page.getByRole('textbox', { name: 'パスワードを入力' }).fill(process.env.SLACK_PASSWORD);
+  await page.getByRole('textbox', { name: 'パスワードを入力' }).fill(slackPassword);
   await page.getByRole('button', { name: '次へ' }).click();
   await page.getByRole('button', { name: '次へ' }).click();
   await page.waitForTimeout(10000); // 5秒待機
 
 
 
-  await page.goto('https://app.slack.com/client/T4Y2T7AMN/C059VF7J8TV', {
+  await page.goto(slackClientUrl, {
     timeout: 10000,
   });
 

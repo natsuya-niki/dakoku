@@ -1,41 +1,39 @@
-import { test, expect } from '@playwright/test';
-import dotenv from 'dotenv';
+import { test } from '@playwright/test';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
+import dotenv from 'dotenv';
+
+import config from '../config.test.json';
 
 dotenv.config();
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-test('ジョブカン打刻', async ({ page }, testInfo) => {
-  // 環境変数から引数を取得
-  const args = {
-    date: process.env.TEST_DATE ? process.env.TEST_DATE : dayjs().tz('Asia/Tokyo').format('YYYYMMDD'),
-    start: process.env.TEST_START_TIME || '0900',
-    end: process.env.TEST_END_TIME || '1800'
-  };
-  console.log('Args:', args);
+test('ジョブカン打刻', async ({ page }) => {
+  const jobCanEmail = config.jobCanEmail;
+  const jobCanPassword = config.jobCanPassword;
 
-  if (!process.env.JOBCAN_EMAIL || !process.env.JOBCAN_PASSWORD) {
-    throw new Error('環境変数 JOBCAN_EMAIL と JOBCAN_PASSWORD を設定してください');
+
+  const inputDate = config.testDate || dayjs().tz('Asia/Tokyo').format('YYYYMMDD');
+  const startTime = config.testStartTime || '0900';
+  const endTime = config.testEndTime || '1800';
+
+
+  if (!jobCanEmail || !jobCanPassword) {
+    throw new Error('config.test.json に jobCanEmail と jobCanPassword を設定してください');
   }
 
-  const inputDate = args.date || '20250203';
-  console.log(`Input Date: ${inputDate}`);
+
   const year = dayjs(inputDate, 'YYYYMMDD').year();
   const month = dayjs(inputDate, 'YYYYMMDD').month() + 1;
   const day = dayjs(inputDate, 'YYYYMMDD').date();
 
-  console.log(`Year: ${year}, Month: ${month}, Day: ${day}`);
-
-  const startTime = args.start || '0900';
-  const endTime = args.end || '1800';
-
   await page.goto('https://id.jobcan.jp/users/sign_in');
-  
-  await page.getByPlaceholder('メールアドレスまたはスタッフコード').fill(process.env.JOBCAN_EMAIL);
-  await page.getByPlaceholder('パスワード').fill(process.env.JOBCAN_PASSWORD);  
+
+
+  await page.getByPlaceholder('メールアドレスまたはスタッフコード').fill(jobCanEmail);
+  await page.getByPlaceholder('パスワード').fill(jobCanPassword);
   await page.getByRole('button', { name: 'ログイン' }).click();
 
   await page.waitForSelector('//html/body/div[1]/div/section[1]/h1', { timeout: 5000 });
