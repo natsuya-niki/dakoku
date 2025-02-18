@@ -1,0 +1,12 @@
+{
+  "slackSigninUrl": "your-test-slack-signin-url",
+  "slackClientUrl": "your-test-slack-client-url",
+  "slackWorkspace": "your-test-workspace",
+  "slackEmail": "your-test-email@example.com",
+  "jobCanPassword": "your-test-jobcan-password",
+  "jobCanEmail": "your-test-jobcan-email",
+  "slackPassword": "your-test-password",
+  "testDate": "20250201",
+  "testStartTime": "0900",
+  "testEndTime": "1800"
+}
