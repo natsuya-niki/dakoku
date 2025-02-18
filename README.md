@@ -26,8 +26,7 @@ pnpm exec playwright install
 
 4. 環境変数の設定
 ```bash
-cp .env.example .env
-# .envファイルを編集して必要な認証情報を設定してください
+cp config.test.example.json config.test.json
 ```
 
 ## 実行方法
