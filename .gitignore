@@ -25,7 +25,4 @@ yarn-debug.log*
 yarn-error.log*
 
 # 環境変数
-.env
-.env.local
-.env.*.local 
 config.test.json
