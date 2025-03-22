@@ -64,6 +64,7 @@ test('Slack打刻', async ({ page }) => {
   await page.getByRole('textbox', { name: '出退勤日を教えてください！（yyyy/mm/dd）' }).fill(formattedDate);
   await page.getByRole('textbox', { name: '出勤/退勤したお時間教えてください！（例：9:15）' }).fill(dayjs(args.start, 'HHmm').format('HH:mm'));
   await page.getByRole('button', { name: '送信する' }).click();
+  await page.waitForTimeout(3000);
 
   // 退勤
   await page.getByRole('button', { name: '勤怠ログ' }).click();
@@ -72,4 +73,5 @@ test('Slack打刻', async ({ page }) => {
   await page.getByRole('textbox', { name: '出退勤日を教えてください！（yyyy/mm/dd）' }).fill(formattedDate);
   await page.getByRole('textbox', { name: '出勤/退勤したお時間教えてください！（例：9:15）' }).fill(dayjs(args.end, 'HHmm').format('HH:mm')); // 退勤時間を設定
   await page.getByRole('button', { name: '送信する' }).click();
+  await page.waitForTimeout(10000);
 });
