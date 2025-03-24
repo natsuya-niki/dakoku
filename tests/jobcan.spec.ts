@@ -52,5 +52,5 @@ test('ジョブカン打刻', async ({ page }) => {
   await page1.getByRole('textbox', { name: '時刻' }).fill(endTime);
   await page1.getByRole('button', { name: '打刻' }).click();
 
-  await page.waitForTimeout(3000);
+  await page1.waitForTimeout(3000);
 });
