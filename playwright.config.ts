@@ -17,7 +17,12 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'], browserName: 'chromium', locale: 'ja-JP' },
+      use: { 
+        ...devices['Desktop Chrome'], 
+        browserName: 'chromium', 
+        locale: 'ja-JP',
+        viewport: { width: 1280, height: 960 }
+      },
     },
     {
       name: 'firefox',
